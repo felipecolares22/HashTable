@@ -17,6 +17,7 @@ class HashTbl
 		~HashTbl();
 	
 		get_key();
+		
 }
 
 

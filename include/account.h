@@ -12,9 +12,9 @@ class account
 	private:
 		string name;
 		int bank;
-		size_type agency;
-		size_type account_num;
-		size_type balance;
+		size_t agency;
+		size_t account_num;
+		size_t balance;
 
 	public:
 
