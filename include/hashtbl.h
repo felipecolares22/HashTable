@@ -9,6 +9,8 @@
 #include <forward_list>
 #include <functional>
 
+namespace ac
+{
 template < typename KeyType, typename DataType >
 class HashEntry
 {
@@ -135,8 +137,52 @@ class HashTbl
 			return true;
 		}
 
-		bool erase ( const KeyType & k_ );
-		bool retrieve ( const KeyType & k_, DataType & d_ ) const;
+		bool erase ( const KeyType & k_ )
+		{
+			KeyHash hashFunc;
+			KeyEqual equalFunc;
+
+			auto end = hashFunc( k_ ) % m_size;
+
+			auto it = m_data_table[end].begin();
+
+			while( it != m_data_table[end].end() )
+			{
+				if( equalFunc( it->m_key, k_ ) )
+				{
+					delete it;
+					return true;
+				}
+
+				it++;
+			}
+
+			return false;
+		}
+
+		bool retrieve ( const KeyType & k_, DataType & d_ ) const
+		{
+			KeyHash hashFunc;
+			KeyEqual equalFunc;
+
+			auto end = hashFunc( k_ ) % m_size;
+			
+			auto it = m_data_table[end].begin();
+
+			while( it != m_data_table[end].end() )
+			{
+				if(equalFunc( it->m_key, k_) )
+				{
+					d_ = it->data;
+					return true;
+				}
+
+				it++;
+			}
+
+			return false;
+		}
+
 		void clear ( void )
 		{
 			m_count = 0;
@@ -178,7 +224,7 @@ class HashTbl
 			}
 		}
 
-} // HashTbl class
-
+}; // HashTbl class
+} // ac Namespace
 
 #endif
