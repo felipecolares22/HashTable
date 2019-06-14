@@ -175,7 +175,7 @@ class HashTbl
 			{
 				if(equalFunc( it->m_key, k_) )
 				{
-					d_ = it->data;
+					d_ = it->m_data;
 					return true;
 				}
 
@@ -244,6 +244,9 @@ class HashTbl
 
 		size_t next_prime( size_t num )
 		{
+			if( num == 0 or num == 1)
+				return num;
+
 			while( true )
 			{
 				int numdiv = 0;

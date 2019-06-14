@@ -26,14 +26,14 @@ class HTTest : public ::testing::Test {
     void SetUp() override
     {
         // Set up our accounts.
-        m_accounts[0] = {"Alex Bastos", 1, 1668, 54321, 1500.f};
-        m_accounts[1] = {"Aline Souza", 1, 1668, 45794, 530.f};
-        m_accounts[2] = {"Cristiano Ronaldo", 13, 557, 87629, 150000.f};
-        m_accounts[3] = {"Jose Lima", 18, 331, 1231, 850.f};
-        m_accounts[4] = {"Saulo Cunha", 116, 666, 1, 5490.f};
-        m_accounts[5] = {"Lima Junior", 12, 123, 5671, 150.f};
-        m_accounts[6] = {"Carlito Pardo", 28, 506, 9816, 50.f};
-        m_accounts[7] = {"Januario Medeiros", 17, 324, 7777, 4850.f};
+        m_accounts[0] = {"Alex Bastos", 1, 1668, 54321, 1500};
+        m_accounts[1] = {"Aline Souza", 1, 1668, 45794, 530};
+        m_accounts[2] = {"Cristiano Ronaldo", 13, 557, 87629, 150000};
+        m_accounts[3] = {"Jose Lima", 18, 331, 1231, 850};
+        m_accounts[4] = {"Saulo Cunha", 116, 666, 1, 5490};
+        m_accounts[5] = {"Lima Junior", 12, 123, 5671, 150};
+        m_accounts[6] = {"Carlito Pardo", 28, 506, 9816, 50};
+        m_accounts[7] = {"Januario Medeiros", 17, 324, 7777, 4850};
 
         target = m_accounts[0];
     }
@@ -60,7 +60,7 @@ TEST_F(HTTest, InitialState)
     ASSERT_TRUE( ht_accounts.empty() );
     ASSERT_EQ( ht_accounts.size(), 0 );
 }
-/*
+
 TEST_F(HTTest, InsertingData)
 {
     Account temp;
@@ -77,7 +77,7 @@ TEST_F(HTTest, InsertingData)
         ASSERT_EQ( temp, e );
     }
 }
-
+/*
 TEST_F(HTTest, OperatorSquareBraketsRHS)
 {
     insert_accounts();

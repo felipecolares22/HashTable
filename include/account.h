@@ -7,35 +7,42 @@
 #include <tuple>
 
 
-class Account
+struct Account
 {
-	public:
+	// public:
 		using AcctKey = std::tuple<std::string, int, int, int>; //!< alias
 
 		std::string name;
 		int bank;
-		size_t agency;
-		size_t account_num;
+		int agency;
+		int account_num;
 		float m_balance;
 
-	public:
+	// public:
 
-		Account( std::string name, int bank, size_t agency, size_t account_num, float m_balance )
-		: name{name}, bank{bank}, agency{agency}, account_num{account_num}, m_balance{m_balance}
-		{ /*empty*/ }
+		// Account( std::string name = "null", int bank = 0, int agency = 0, int account_num = 0, float m_balance = 0 )
+		// : name{name}, bank{bank}, agency{agency}, account_num{account_num}, m_balance{m_balance}
+		// { /*empty*/
+		// 	std::cout << name << " " << bank << " " << agency << std::endl;
+		//  }
 
-		~Account() 
-		{ /*empty*/ }
+		// ~Account() 
+		// { /*empty*/ }
 
 		AcctKey get_key()
 		{
 			return std::make_tuple( name, bank, agency, account_num );
 		}
+
+		bool operator==( const Account &rhs ) const
+		{
+			return name == rhs.name and bank == rhs.bank and agency == rhs.agency and account_num == rhs.account_num and m_balance == rhs.m_balance;
+ 		}
 };
 
 struct KeyHash
 {
-	std::size_t operator()( const Account::AcctKey& k_ ) const
+	int operator()( const Account::AcctKey& k_ ) const
 	{
 		return std::get<3>(k_);
 	}
