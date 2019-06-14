@@ -6,7 +6,8 @@
 #include <string>
 #include <tuple>
 
-class account
+
+class Account
 {
 	public:
 		using AcctKey = std::tuple<std::string, int, int, int>; //!< alias
@@ -19,18 +20,18 @@ class account
 
 	public:
 
-		account( std::string name, int bank, size_t agency, size_t account_num, float m_balance )
+		Account( std::string name, int bank, size_t agency, size_t account_num, float m_balance )
 		: name{name}, bank{bank}, agency{agency}, account_num{account_num}, m_balance{m_balance}
 		{ /*empty*/ }
 
-		~account() 
+		~Account() 
 		{ /*empty*/ }
 
 		AcctKey get_key()
 		{
 			return std::make_tuple( name, bank, agency, account_num );
 		}
-}
+};
 
 struct KeyHash
 {
@@ -38,11 +39,14 @@ struct KeyHash
 	{
 		return std::get<3>(k_);
 	}
-}
+};
 
 struct KeyEqual
 {
-	// bool operator()( const Account::AcctKey& lhs )
-}
+	bool operator()( const Account::AcctKey& lhs, const Account::AcctKey& rhs )
+	{
+		return ( std::get<3>(lhs) == std::get<3>(rhs) );
+	}
+};
 
 #endif

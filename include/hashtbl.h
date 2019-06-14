@@ -8,6 +8,8 @@
 #include <math.h>
 #include <forward_list>
 #include <functional>
+#include <tuple>
+
 
 namespace ac
 {
@@ -19,7 +21,7 @@ class HashEntry
 		{  }
 		KeyType m_key;
 		DataType m_data;
-} // HashEntry Class
+}; // HashEntry Class
 
 template < typename KeyType,
 		   typename DataType,
@@ -45,7 +47,7 @@ class HashTbl
 			delete [] m_data_table;	
 		}
 
-		HashTbl( const hashtbl& other )
+		HashTbl( const HashTbl& other )
 		{
 			m_data_table = new std::forward_list< Entry >[ other.m_size ];
 
@@ -197,9 +199,41 @@ class HashTbl
 		{ return m_size; }
 
 		DataType& at ( const KeyType& k_ );
-		DataType& operator[]( const KeyType& k_ );
+		DataType& operator[]( const KeyType& k_ )
+		{
+			KeyHash hashFunc;
+			KeyEqual equalFunc;
+
+			auto end = hashFunc( k_ ) % m_size;
+			
+			auto it = m_data_table[end].begin();
+
+			while( it != m_data_table[end].end() )
+			{
+				if(equalFunc( it->m_key, k_) )
+				{
+					return it->data;
+				}
+
+				it++;
+			}
+
+			return nullptr;
+		}
 		size_t count( const KeyType& k_ ) const;
-		friend std::ostream& operator<< ( std::ostream & os, const HashTbl & htbl);
+		friend std::ostream& operator<< ( std::ostream & os, const HashTbl & tbl )
+		{
+			for(int i=0; i<tbl.prime_size; i++)
+			{
+				os << "[" << i << "]";
+				for(auto it = tbl.m_data_table[i].begin(); it != tbl.m_data_table[i].end(); it++)
+				{
+					os << " -> " << it->m_data;
+				}
+				os << std::endl;
+			}
+			return os;
+		}
 
 	private:
 		void rehash(  );

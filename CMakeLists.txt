@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project (my_list VERSION 1.0.0 LANGUAGES CXX )
+project (TADHashTable VERSION 1.0.0 LANGUAGES CXX )
 
 #=== FINDING PACKAGES ===#
 
@@ -25,7 +25,7 @@ include_directories( include )
 #set(SOURCES src/filter.cpp src/timing_filter.cpp)
 
 # We want to build a static library.
-add_library(my_list STATIC "test/tests.cpp")
+add_library(TADHashTable STATIC "test/tests.cpp")
 
 #define C++11 as the standard.
 #target_compile_features(iranges PUBLIC cxx_std_11)
@@ -34,20 +34,20 @@ set ( APP_SOURCE_DIR "app" )
 
 #Set the location for library installation -- i.e., /usr/lib in this case
 # not really necessary in this example. Use "sudo make install" to apply
-install(TARGETS my_list ARCHIVE DESTINATION ${CMAKE_SOURCE_DIR}/../${APP_SOURCE_DIR}/lib)
+install(TARGETS TADHashTable ARCHIVE DESTINATION ${CMAKE_SOURCE_DIR}/../${APP_SOURCE_DIR}/lib)
 
 # Also, copy the headers to the include directory of the application.
-install(FILES ${CMAKE_SOURCE_DIR}/include/list.h DESTINATION ${CMAKE_SOURCE_DIR}/../${APP_SOURCE_DIR}/include )
+install(FILES ${CMAKE_SOURCE_DIR}/include/*.h DESTINATION ${CMAKE_SOURCE_DIR}/../${APP_SOURCE_DIR}/include )
 
 #=== Test target ===
 
 #However, the file(GLOB...) allows for wildcard additions:
 file(GLOB SOURCES_TEST "test/*.cpp")
 #
-add_executable(list_tests ${SOURCES_TEST})
+add_executable(hash_tests ${SOURCES_TEST})
 
 # Link with the google test libraries.
-target_link_libraries(list_tests PRIVATE ${GTEST_LIBRARIES} PRIVATE my_list PRIVATE pthread )
+target_link_libraries(hash_tests PRIVATE ${GTEST_LIBRARIES} PRIVATE TADHashTable PRIVATE pthread )
 
 #define C++11 as the standard.
 #set_property(TARGET run_tests PROPERTY CXX_STANDARD 11)
