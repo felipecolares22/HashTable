@@ -1,5 +1,5 @@
 # HashTable
-In this project our objective is to build our a HashTable, an ADT.
+In this project our objective is to build a HashTable, an ADT.
 
 ### Dependencies
 * `cmake`
@@ -23,7 +23,7 @@ Then, open in your browser the `index.html` file, located on the `docs/html/` fo
 ### Run Tests
 
 #### Compile
-To test the `HashTable` ADT, go to the project directory and type
+To test the ADT `HashTable`, go to the project directory and type
 
 ```bash
 mkdir build
