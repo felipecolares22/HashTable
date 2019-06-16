@@ -44,7 +44,7 @@ class HashTbl
 
 		virtual ~HashTbl()
 		{
-			delete [] m_data_table;	
+			delete [] m_data_table;
 		}
 
 		HashTbl( const HashTbl& other )
@@ -153,6 +153,7 @@ class HashTbl
 				if( equalFunc( it->m_key, k_ ) )
 				{
 					delete it;
+					m_count--;
 					return true;
 				}
 
@@ -196,7 +197,7 @@ class HashTbl
 		{ return m_count == 0; }
 
 		size_t size( void ) const
-		{ return m_size; }
+		{ return m_count; }
 
 		DataType& at ( const KeyType& k_ );
 		DataType& operator[]( const KeyType& k_ )
@@ -220,6 +221,7 @@ class HashTbl
 
 			return nullptr;
 		}
+
 		size_t count( const KeyType& k_ ) const;
 		friend std::ostream& operator<< ( std::ostream & os, const HashTbl & tbl )
 		{

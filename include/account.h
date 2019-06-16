@@ -20,14 +20,14 @@ struct Account
 
 	// public:
 
-		// Account( std::string name = "null", int bank = 0, int agency = 0, int account_num = 0, float m_balance = 0 )
-		// : name{name}, bank{bank}, agency{agency}, account_num{account_num}, m_balance{m_balance}
-		// { /*empty*/
-		// 	std::cout << name << " " << bank << " " << agency << std::endl;
-		//  }
+	//	Account( std::string name = "null", int bank = 0, int agency = 0, int account_num = 0, float m_balance = 0 )
+	//	: name{name}, bank{bank}, agency{agency}, account_num{account_num}, m_balance{m_balance}
+	//	{ /*empty*/
+	//	//	std::cout << name << " " << bank << " " << agency << std::endl;
+	//	}
 
-		// ~Account() 
-		// { /*empty*/ }
+	//	~Account() 
+	//	{ /*empty*/ }
 
 		AcctKey get_key()
 		{
