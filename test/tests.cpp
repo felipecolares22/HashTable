@@ -77,7 +77,7 @@ TEST_F(HTTest, InsertingData)
         ASSERT_EQ( temp, e );
     }
 }
-/*
+
 TEST_F(HTTest, OperatorSquareBraketsRHS)
 {
     insert_accounts();
@@ -471,7 +471,7 @@ TEST_F(HTTest, Clear)
     ASSERT_TRUE( htable.empty() );
     ASSERT_EQ( htable.size(), 0 );
 }
-
+/*
 TEST_F(HTTest, Rehash)
 {
     ac::HashTbl<char, int> htable (2);
@@ -510,7 +510,7 @@ TEST_F(HTTest, Rehash)
         ASSERT_EQ( e.second, data );
     }
 }
-
+*/
 
 TEST_F(HTTest, Count)
 {
@@ -546,7 +546,7 @@ TEST_F(HTTest, Count)
         ASSERT_EQ( set3.size(), htable.count(e.first) );
     //std::cout << "The table: \n" << htable << std::endl;
 }
-*/
+
 int main(int argc, char** argv)
 {
     ::testing::InitGoogleTest(&argc, argv);

@@ -9,6 +9,7 @@
 #include <forward_list>
 #include <functional>
 #include <tuple>
+#include <stdexcept>
 
 
 namespace ac
@@ -54,13 +55,13 @@ class HashTbl
 			m_size = other.m_size;
 			m_count = other.m_count;
 
-			for( int i = 0 ; i < m_size ; i++ )
+			for( size_t i = 0 ; i < m_size ; i++ )
 			{
 				auto otherIt = other.m_data_table[i].begin();
 
 				while( otherIt != other.m_data_table[i].end() )
 				{
-					m_data_table.push_front( *otherIt );
+					m_data_table[i].push_front( *otherIt );
 					otherIt++;
 				}
 			}
@@ -68,12 +69,13 @@ class HashTbl
 
 		HashTbl( std::initializer_list < Entry > ilist )
 		{
-			for( Entry & e : ilist )
+			m_size = DEFAULT_SIZE;
+			m_data_table = new std::forward_list< Entry >[ m_size ];
+
+			for( const Entry & e : ilist )
 			{
 				insert( e.m_key, e.m_data );
 			}
-
-			m_size = ilist.size();
 		}
 
 		HashTbl& operator=( const HashTbl & other )
@@ -85,16 +87,18 @@ class HashTbl
 			m_size = other.m_size;
 			m_count = other.m_count;
 
-			for( int i = 0 ; i < m_size ; i++ )
+			for( size_t i = 0 ; i < m_size ; i++ )
 			{
 				auto otherIt = other.m_data_table[i].begin();
 
 				while( otherIt != other.m_data_table[i].end() )
 				{
-					m_data_table.push_back( *otherIt );
+					m_data_table[i].push_front( *otherIt );
 					otherIt++;
 				}
 			}
+
+			return *this;
 		}
 
 		HashTbl& operator=( std::initializer_list < Entry > ilist )
@@ -106,10 +110,12 @@ class HashTbl
 			m_data_table = new std::forward_list< Entry >[ m_size ];
 			m_count = 0;
 
-			for( Entry & e : ilist )
+			for( const Entry & e : ilist )
 			{
 				insert( e.m_key, e.m_data );
 			}
+
+			return *this;
 		}
 
 		bool insert ( const KeyType & k_, const DataType & d_ )
@@ -147,17 +153,23 @@ class HashTbl
 			auto end = hashFunc( k_ ) % m_size;
 
 			auto it = m_data_table[end].begin();
+			auto first = it;
 
 			while( it != m_data_table[end].end() )
 			{
 				if( equalFunc( it->m_key, k_ ) )
-				{
-					delete it;
+				{	
+					if(it == first)
+						m_data_table[end].pop_front();
+					else
+						m_data_table[end].erase_after(first);
 					m_count--;
 					return true;
 				}
 
 				it++;
+				if(not (first == it))
+					first++;
 			}
 
 			return false;
@@ -189,7 +201,7 @@ class HashTbl
 		void clear ( void )
 		{
 			m_count = 0;
-			for( int i = 0 ; i < m_size ; i++ )
+			for( size_t i = 0 ; i < m_size ; i++ )
 				m_data_table[i].clear();
 		}
 
@@ -199,7 +211,28 @@ class HashTbl
 		size_t size( void ) const
 		{ return m_count; }
 
-		DataType& at ( const KeyType& k_ );
+		DataType& at ( const KeyType& k_ )
+		{
+			KeyHash hashFunc;
+			KeyEqual equalFunc;
+
+			auto end = hashFunc( k_ ) % m_size;
+			
+			auto it = m_data_table[end].begin();
+
+			while( it != m_data_table[end].end() )
+			{
+				if(equalFunc( it->m_key, k_) )
+				{
+					return it->m_data;
+				}
+
+				it++;
+			}
+			
+			throw std::out_of_range("out of range, bro");
+		}
+
 		DataType& operator[]( const KeyType& k_ )
 		{
 			KeyHash hashFunc;
@@ -213,16 +246,37 @@ class HashTbl
 			{
 				if(equalFunc( it->m_key, k_) )
 				{
-					return it->data;
+					return it->m_data;
 				}
 
 				it++;
 			}
+			
 
-			return nullptr;
+			DataType new_data = {0};
+			insert( k_, new_data);
+			auto it2 = m_data_table[end].begin();
+			return it2->m_data; 
 		}
 
-		size_t count( const KeyType& k_ ) const;
+		size_t count( const KeyType& k_ ) const
+		{
+			KeyHash hashFunc;
+
+			auto end = hashFunc( k_ ) % m_size;			
+			auto it = m_data_table[end].begin();
+
+			size_t counter = 0u;
+
+			while( it != m_data_table[end].end() )
+			{
+				counter++;
+				it++;
+			}
+
+			return counter;
+		}
+
 		friend std::ostream& operator<< ( std::ostream & os, const HashTbl & tbl )
 		{
 			for(int i=0; i<tbl.prime_size; i++)
