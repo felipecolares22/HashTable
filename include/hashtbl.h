@@ -318,7 +318,6 @@ class HashTbl
 
 			std::forward_list<Entry> * new_data_table = new std::forward_list< Entry >[ new_size ];
 
-			// passar todos os elementos para o novo
 			for( size_t i = 0u; i < m_size ; i++ )
 			{
 				auto it = m_data_table[i].begin();
@@ -331,18 +330,15 @@ class HashTbl
 				}
 			}
 
-			// limpar antigo (clear)
-			// deletar antigo (delete [])
 			clear();
 			delete [] m_data_table;
 			
-			// passar o novo para o antigo
 			m_data_table = new_data_table;
 
-			// mudar dados de m_size
 			m_size = new_size;
 			m_count = m_count_backup;
 		}
+		
 		size_t m_size = 0u;
 		size_t m_count = 0u;
 		std::forward_list< Entry > * m_data_table;
