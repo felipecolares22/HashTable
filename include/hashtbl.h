@@ -65,6 +65,9 @@ class HashTbl
 					otherIt++;
 				}
 			}
+
+			if( ( m_count / m_size ) >= 1.0 )
+				rehash();
 		}
 
 		HashTbl( std::initializer_list < Entry > ilist )
@@ -76,6 +79,9 @@ class HashTbl
 			{
 				insert( e.m_key, e.m_data );
 			}
+
+			if( ( m_count / m_size ) >= 1.0 )
+				rehash();
 		}
 
 		HashTbl& operator=( const HashTbl & other )
@@ -98,6 +104,9 @@ class HashTbl
 				}
 			}
 
+			if( ( m_count / m_size ) >= 1.0 )
+				rehash();
+
 			return *this;
 		}
 
@@ -114,6 +123,9 @@ class HashTbl
 			{
 				insert( e.m_key, e.m_data );
 			}
+
+			if( ( m_count / m_size ) >= 1.0 )
+				rehash();
 
 			return *this;
 		}
@@ -141,6 +153,9 @@ class HashTbl
 
 			m_data_table[end].push_front( new_entry );
 			m_count++;
+
+			if( ( m_count / m_size ) >= 1.0 )
+				rehash();
 
 			return true;
 		}
@@ -292,7 +307,42 @@ class HashTbl
 		}
 
 	private:
-		void rehash(  );
+		void rehash()
+		{
+			KeyHash hashFunc;
+
+			size_t m_count_backup = m_count;
+			size_t new_size = next_prime(m_size*2);
+			if( m_size == 0)
+				new_size = next_prime(1);
+
+			std::forward_list<Entry> * new_data_table = new std::forward_list< Entry >[ new_size ];
+
+			// passar todos os elementos para o novo
+			for( size_t i = 0u; i < m_size ; i++ )
+			{
+				auto it = m_data_table[i].begin();
+				while( it != m_data_table[i].end() )
+				{
+					Entry new_entry( it->m_key, it->m_data );
+					auto end = hashFunc( it->m_key ) % new_size;
+					new_data_table[end].push_front( new_entry );
+					it++;
+				}
+			}
+
+			// limpar antigo (clear)
+			// deletar antigo (delete [])
+			clear();
+			delete [] m_data_table;
+			
+			// passar o novo para o antigo
+			m_data_table = new_data_table;
+
+			// mudar dados de m_size
+			m_size = new_size;
+			m_count = m_count_backup;
+		}
 		size_t m_size = 0u;
 		size_t m_count = 0u;
 		std::forward_list< Entry > * m_data_table;
