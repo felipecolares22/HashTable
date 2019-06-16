@@ -6,13 +6,13 @@ In this project our objective is to build our a HashTable, an ADT.
 * `make`
 * `g++`
 * `google tests`
-* `Doxygen (to gerenate code documentation)`
+* `Doxygen` (to gerenate code documentation)
 
 ### Usage
-To use the HashTable, you will need to import the `hashtbl.h` and `account.h` files located on the `include` folder to your project. Look the documentation for a more detailed explanation about the HashTable.
+To use the HashTable, you will need to import the `hashtbl.h` file located on the `include` folder to your project. Look the documentation for a more detailed explanation about the HashTable.
 
 ### Generate Documentation
-Go to your project directory and type
+Go to the project directory and type
 
 ```bash
 doxygen config
